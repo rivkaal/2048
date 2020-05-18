@@ -44,6 +44,7 @@ class ReflexAgent(Agent):
         GameStates (GameState.py) and returns a number, where higher numbers are better.
 
         """
+        # todo 1
 
         # Useful information you can extract from a GameState (game_state.py)
 
@@ -53,7 +54,8 @@ class ReflexAgent(Agent):
         score = successor_game_state.score
 
         "*** YOUR CODE HERE ***"
-        return score
+        occupied = np.count_nonzero(board)
+        return (score / occupied) * max_tile 
 
 
 def score_evaluation_function(current_game_state):
@@ -110,7 +112,30 @@ class MinmaxAgent(MultiAgentSearchAgent):
             Returns the successor game state after an agent takes an action
         """
         """*** YOUR CODE HERE ***"""
-        util.raiseNotDefined()
+        # todo 2
+        value = self.minimax(game_state, 0, self.depth)
+        return self.find_action(value, game_state, 0)
+
+
+    def find_action(self, value, parent_state, agent_index):
+        legal_actions = parent_state.get_agent_legal_actions()
+        for action in legal_actions:
+            if value == self.evaluation_function(parent_state.generate_successor(agent_index, action)):
+                return action
+        return action.STOP
+
+
+    def minimax(self, game_state, agent_index, depth):
+        legal_actions = game_state.get_agent_legal_actions()
+        if depth == 0 or len(legal_actions)==0:
+            return self.evaluation_function(game_state)
+        states = [game_state.generate_successor(0, action) for action in legal_actions]
+        values = [self.minimax(state, 1 - agent_index, depth - 1) for state in states]
+        if agent_index == 0:
+            return max(values)
+        else:
+            return min(values)
+
 
 
 
