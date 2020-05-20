@@ -113,8 +113,8 @@ class MinmaxAgent(MultiAgentSearchAgent):
         """
         """*** YOUR CODE HERE ***"""
         # todo 2
-        value = self.minimax(game_state, 0, self.depth)
-        return self.find_action(value, game_state, 0)
+        action, val = self.minimax(game_state, 0, self.depth)
+        return action
 
 
     def find_action(self, value, parent_state, agent_index):
@@ -125,16 +125,21 @@ class MinmaxAgent(MultiAgentSearchAgent):
         return action.STOP
 
 
-    def minimax(self, game_state, agent_index, depth):
+    def minimax(self, game_state, agent_index, depth, action = None):
         legal_actions = game_state.get_agent_legal_actions()
-        if depth == 0 or len(legal_actions)==0:
-            return self.evaluation_function(game_state)
-        states = [game_state.generate_successor(0, action) for action in legal_actions]
-        values = [self.minimax(state, 1 - agent_index, depth - 1) for state in states]
+        if depth == 0 or len(legal_actions) == 0:
+            return action, self.evaluation_function(game_state)
+        actions = {}
+        for action in legal_actions:
+            state = game_state.generate_successor(0,action)
+            new_action, value = self.minimax(state, 1 - agent_index, depth - 1, action)
+            actions[action] = value
         if agent_index == 0:
-            return max(values)
+            best_action = max(actions, key=lambda k:actions[k])
+            return best_action, actions[best_action]
         else:
-            return min(values)
+            best_action = min(actions, key=lambda k: actions[k])
+            return best_action, actions[best_action]
 
 
 
