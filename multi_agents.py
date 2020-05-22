@@ -1,3 +1,5 @@
+import random
+
 import numpy
 import numpy as np
 import abc
@@ -53,6 +55,7 @@ class ReflexAgent(Agent):
         board = successor_game_state.board
         max_tile = successor_game_state.max_tile
         score = successor_game_state.score
+        # todo - maybe improve this as well if scores being given
 
         "*** YOUR CODE HERE ***"
         occupied = np.count_nonzero(board)
@@ -115,8 +118,8 @@ class MinmaxAgent(MultiAgentSearchAgent):
         """*** YOUR CODE HERE ***"""
         # todo 2
         action, val = self.minimax(game_state, 0, self.depth)
-        print(val)
-        exit(0)
+        # print(val)
+        # exit(0)
         return action
 
 
@@ -157,19 +160,25 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         # exit(0)
         return action
 
-    def ab_minimax(self, game_state, agent_index, depth, a=numpy.inf, b=numpy.inf):
+    def ab_minimax(self, game_state, agent_index, depth, a=-numpy.inf, b=numpy.inf):
         legal_actions = game_state.get_legal_actions(agent_index)
         if depth == 0 or len(legal_actions) == 0:
             return Action.STOP, self.evaluation_function(game_state)
         actions = {}
         for action in legal_actions:
             state = game_state.generate_successor(agent_index, action)
-            new_action, value = self.minimax(state, 1 - agent_index, depth - 0.5)
+            minmax_action, value = self.ab_minimax(state, 1 - agent_index, depth - 0.5, a, b)
             actions[action] = value
             if agent_index == 0: #max
-                pass
+                if value >= b:
+                    return action, value
+                if value > a:
+                    a = value
             else: # min
-                pass
+                if value <= a:
+                    return action, value
+                if value < b:
+                    b = value
         if agent_index == 0:
             best_action = max(actions, key=lambda k: actions[k])
             return best_action, actions[best_action]
@@ -191,8 +200,27 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         legal moves.
         """
         # todo 4
-        """*** YOUR CODE HERE ***"""
-        util.raiseNotDefined()
+        action, val = self.ab_expectimax(game_state, 0, self.depth)
+        # print(val)
+        # exit(0)
+        return action
+
+    def ab_expectimax(self, game_state, agent_index, depth):
+        legal_actions = game_state.get_legal_actions(agent_index)
+        if depth == 0 or len(legal_actions) == 0:
+            return Action.STOP, self.evaluation_function(game_state)
+        actions = {}
+        for action in legal_actions:
+            state = game_state.generate_successor(agent_index, action)
+            new_action, value = self.ab_expectimax(state, 1 - agent_index, depth - 0.5)
+            actions[action] = value
+        if agent_index == 0:
+            best_action = max(actions, key=lambda k: actions[k])
+            return best_action, actions[best_action]
+        else: # enemy choice - choose randomly
+            # best_action = min(actions, key=lambda k: actions[k])
+            random_action = random.choice(list(actions.keys()))
+            return random_action, actions[random_action]
 
 
 
@@ -203,10 +231,23 @@ def better_evaluation_function(current_game_state):
     Your extreme 2048 evaluation function (question 5).
 
     DESCRIPTION: <write something here so we know what you did>
+
+    IDEAS
+    - ensure high val in a specific corner
+    - montone along sides near this corner
+    - bonus for open spaces
+    -
     """
     # todo 5
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    board = current_game_state.board
+    max_tile = current_game_state.max_tile
+    score = current_game_state.score
+
+    corners = current_game_state.board[[0, 0, -1, -1], [0, -1, 0, -1]]
+
+    max_in_corner = 1 if max_tile in corners else 0
+    occupied = np.count_nonzero(board)
+    return (score / occupied) * max_tile + max_in_corner * max_tile
 
 
 # Abbreviation
