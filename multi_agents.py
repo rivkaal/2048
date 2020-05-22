@@ -1,3 +1,4 @@
+import numpy
 import numpy as np
 import abc
 import util
@@ -55,7 +56,7 @@ class ReflexAgent(Agent):
 
         "*** YOUR CODE HERE ***"
         occupied = np.count_nonzero(board)
-        return (score / occupied) * max_tile 
+        return (score / occupied) * max_tile
 
 
 def score_evaluation_function(current_game_state):
@@ -114,8 +115,8 @@ class MinmaxAgent(MultiAgentSearchAgent):
         """*** YOUR CODE HERE ***"""
         # todo 2
         action, val = self.minimax(game_state, 0, self.depth)
-        # print(val)
-        # exit(0)
+        print(val)
+        exit(0)
         return action
 
 
@@ -149,9 +150,32 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         """
         Returns the minimax action using self.depth and self.evaluationFunction
         """
+        #todo 3
         """*** YOUR CODE HERE ***"""
-        util.raiseNotDefined()
+        action, val = self.ab_minimax(game_state, 0, self.depth)
+        # print(val)
+        # exit(0)
+        return action
 
+    def ab_minimax(self, game_state, agent_index, depth, a=numpy.inf, b=numpy.inf):
+        legal_actions = game_state.get_legal_actions(agent_index)
+        if depth == 0 or len(legal_actions) == 0:
+            return Action.STOP, self.evaluation_function(game_state)
+        actions = {}
+        for action in legal_actions:
+            state = game_state.generate_successor(agent_index, action)
+            new_action, value = self.minimax(state, 1 - agent_index, depth - 0.5)
+            actions[action] = value
+            if agent_index == 0: #max
+                pass
+            else: # min
+                pass
+        if agent_index == 0:
+            best_action = max(actions, key=lambda k: actions[k])
+            return best_action, actions[best_action]
+        else:
+            best_action = min(actions, key=lambda k: actions[k])
+            return best_action, actions[best_action]
 
 
 class ExpectimaxAgent(MultiAgentSearchAgent):
@@ -166,6 +190,7 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         The opponent should be modeled as choosing uniformly at random from their
         legal moves.
         """
+        # todo 4
         """*** YOUR CODE HERE ***"""
         util.raiseNotDefined()
 
@@ -179,6 +204,7 @@ def better_evaluation_function(current_game_state):
 
     DESCRIPTION: <write something here so we know what you did>
     """
+    # todo 5
     "*** YOUR CODE HERE ***"
     util.raiseNotDefined()
 

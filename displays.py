@@ -32,3 +32,6 @@ class SummaryDisplay(object):
         print("highest tile: %s" % self.highest_tile)
         print("game_durations: %s" % self.game_durations)
         print("win rate: %s" % win_rate)
+
+        print("avg highest tile: %s" % (sum(self.highest_tile)/len(self.highest_tile)))
+        print("Avg score: %s" % (sum(self.scores)/len(self.scores)))
