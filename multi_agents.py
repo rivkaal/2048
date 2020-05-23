@@ -162,6 +162,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
 
     def ab_minimax(self, game_state, agent_index, depth, a=-numpy.inf, b=numpy.inf):
         legal_actions = game_state.get_legal_actions(agent_index)
+        self.evaluation_function(game_state) #todo for debugging
         if depth == 0 or len(legal_actions) == 0:
             return Action.STOP, self.evaluation_function(game_state)
         actions = {}
@@ -236,18 +237,61 @@ def better_evaluation_function(current_game_state):
     - ensure high val in a specific corner
     - montone along sides near this corner
     - bonus for open spaces
-    -
+    - negative if no move possible
     """
     # todo 5
-    board = current_game_state.board
-    max_tile = current_game_state.max_tile
-    score = current_game_state.score
+    s = current_game_state
+    lev = level(s)
+    cor = max_in_sw_corner(s)
+    occ = num_occupied(s)
+    sco = score(s)
+    bot = bottom_monotone(s)
+    lef = left_monotone(s)
+    opn = 1-(occ/16)
 
-    corners = current_game_state.board[[0, 0, -1, -1], [0, -1, 0, -1]]
 
-    max_in_corner = 1 if max_tile in corners else 0
-    occupied = np.count_nonzero(board)
-    return (score / occupied) * max_tile + max_in_corner * max_tile
+
+    a1 =  sco * (10*cor + 2*lef + 1*bot + opn) #  40g/depth1: med=2702 avg=3186   10g/depth2: med=???? avg=????
+    a2 =  sco * (10*cor + 3*lef + 2*bot + opn) #  40g/depth1: med=???? avg=????   10g/depth2: med=???? avg=????
+
+    return a1
+
+def can_move(current_game_state):
+    # todo return false if no legal children
+    return current_game_state.generate_successor
+
+# def max_in_sw_corner(current_game_state):
+#     corners = current_game_state.board[[0, 0, -1, -1], [0, -1, 0, -1]]
+#     return 1 if current_game_state.max_tile == corners[2] else 0
+
+def num_occupied(current_game_state):
+    return np.count_nonzero(current_game_state.board)
+
+def level(current_game_state):
+    return np.log2(current_game_state.max_tile)
+
+def score(current_game_state):
+    return current_game_state.score
+
+def max_in_sw_corner(current_game_state):
+    # corners = current_game_state.board[[0, 0, -1, -1], [0, -1, 0, -1]]
+    return 1 if current_game_state.max_tile == current_game_state.board[3][0] else 0
+
+def bottom_monotone(current_game_state):
+    a = current_game_state.board[3][0]
+    b = current_game_state.board[3][1]
+    c = current_game_state.board[3][2]
+    d = current_game_state.board[3][3]
+
+    return 1 if a >= b >= c >= d else 0
+
+def left_monotone(current_game_state):
+    a = current_game_state.board[0][0]
+    b = current_game_state.board[1][0]
+    c = current_game_state.board[2][0]
+    d = current_game_state.board[3][0]
+
+    return 1 if d >= c >= b >= a else 0
 
 
 # Abbreviation
