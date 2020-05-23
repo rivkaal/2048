@@ -52,14 +52,25 @@ class ReflexAgent(Agent):
         # Useful information you can extract from a GameState (game_state.py)
 
         successor_game_state = current_game_state.generate_successor(action=action)
-        board = successor_game_state.board
-        max_tile = successor_game_state.max_tile
-        score = successor_game_state.score
+        # board = successor_game_state.board
+        # max_tile = successor_game_state.max_tile
+        # score = successor_game_state.score
         # todo - maybe improve this as well if scores being given
 
         "*** YOUR CODE HERE ***"
-        occupied = np.count_nonzero(board)
-        return (score / occupied) * max_tile
+        s = successor_game_state
+
+        cor = max_in_sw_corner(s)
+        occ = num_occupied(s)
+        sco = score(s)
+        opn = 1 - (occ / 16)
+        sum_mono = sum_monotones(s)
+
+        riv =  (s.score / occ) * s.max_tile
+
+        mono3 = sco * (4*cor + 1*sum_mono + 1*opn)  # 20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
+
+        return mono3
 
 
 def score_evaluation_function(current_game_state):
@@ -278,7 +289,7 @@ def better_evaluation_function(current_game_state):
     opn = 1-(occ/16)
     sid = all_side_monotones(s)
     dwn = all_down_monotones(s)
-    sum = sum_monotones(s)
+    sum_mono = sum_monotones(s)
 
 
 
@@ -299,7 +310,7 @@ def better_evaluation_function(current_game_state):
     mono1 = sco * (10*cor + 1*lef + 1*bot + 1*dwn + 1*sid + 1*opn) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
     mono2 = sco * (10*cor + 1*dwn + 1*sid + 1*opn) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
     mono2_cond = mono2 if sco > 45 else lev*cor    #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
-    mono3 = sco * (20*cor + 1*sum+ 4*opn) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?  #todo also looking good - achives 7k on more than half!
+    mono3 = sco * (20*cor + 1*sum_mono+ 4*opn) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?  #todo also looking good - achives 7k on more than half!
 
 
     return mono3
