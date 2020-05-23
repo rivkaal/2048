@@ -182,6 +182,9 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
                     b = value
         if agent_index == 0:
             best_action = max(actions, key=lambda k: actions[k])
+            # if depth == 2:
+            #     print(f"best action: {best_action}, score given: {actions[best_action]}")
+            #     input("enter:")
             return best_action, actions[best_action]
         else:
             best_action = min(actions, key=lambda k: actions[k])
@@ -201,12 +204,13 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         legal moves.
         """
         # todo 4
+        # action, val = self.expectimax(game_state, 0, self.depth)
         action, val = self.ab_expectimax(game_state, 0, self.depth)
         # print(val)
         # exit(0)
         return action
 
-    def ab_expectimax(self, game_state, agent_index, depth):
+    def expectimax(self, game_state, agent_index, depth):
         legal_actions = game_state.get_legal_actions(agent_index)
         if depth == 0 or len(legal_actions) == 0:
             return Action.STOP, self.evaluation_function(game_state)
@@ -219,11 +223,32 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
             best_action = max(actions, key=lambda k: actions[k])
             return best_action, actions[best_action]
         else: # enemy choice - choose randomly
-            # best_action = min(actions, key=lambda k: actions[k])
             random_action = random.choice(list(actions.keys()))
-            return random_action, actions[random_action]
-            # avg_value = numpy.average(list(actions.items())) #todo value for enemy should be average of all values
-            # return random_action, avg_value
+            avg_value = numpy.average(list(actions.values()))
+            return random_action, avg_value
+
+    def ab_expectimax(self, game_state, agent_index, depth, a=-numpy.inf, b=numpy.inf):
+        legal_actions = game_state.get_legal_actions(agent_index)
+        if depth == 0 or len(legal_actions) == 0:
+            return Action.STOP, self.evaluation_function(game_state)
+        actions = {}
+        for action in legal_actions:
+            state = game_state.generate_successor(agent_index, action)
+            new_action, value = self.ab_expectimax(state, 1 - agent_index, depth - 0.5, a, b)
+            actions[action] = value
+            if agent_index == 0: #max - prune only for our player
+                if value >= b:
+                    return action, value
+            else: # min
+                if value < b:
+                    b = value
+        if agent_index == 0:
+            best_action = max(actions, key=lambda k: actions[k])
+            return best_action, actions[best_action]
+        else: # min - enemy choice - choose randomly
+            random_action = random.choice(list(actions.keys()))
+            avg_value = numpy.average(list(actions.values()))
+            return random_action, avg_value
 
 
 
@@ -255,12 +280,16 @@ def better_evaluation_function(current_game_state):
 
     a1 =  sco * (10*cor + 2*lef + 1*bot + opn)     #  20g/depth1: med=3146 avg=3183   10g/depth2: med=4758 avg=6017
     a1_cond1 = a1 if sco > 50 else cor             #  20g/depth1: med=3882 avg=3817   10g/depth2: med=5574 avg=5690
-    a1_cond2 = a1 if sco > 50 else cor + lef + bot #  20g/depth1: med=3120 avg=3360   10g/depth2: med=???? avg=????
-    a2 =  sco * (10*cor + 3*lef + 3*bot + opn)     #  20g/depth1: med=2496 avg=3301   10g/depth2: med=???? avg=????
-    a3 =  sco * (12*cor + 2*lef + 1*bot + opn)     #  20g/depth1: med=2482 avg=2753   10g/depth2: med=???? avg=????
-    a4 =  sco * (10*cor + 4*lef + 2*bot + opn + 1) #  20g/depth1: med=2086 avg=2603   10g/depth2: med=???? avg=????
+    a1_cond2 = a1 if sco > 50 else cor + lef + bot #  20g/depth1: med=3120 avg=3360   10g/depth2: med=? avg=?
+    a1_cond3 = a1 if sco > 45 else cor             #  20g/depth1: med=3390 avg=3478   10g/depth2: med=? avg=?
+    a1_cond4 = a1 if sco > 40 else cor             #  20g/depth1: med=3272 avg=3406   10g/depth2: med=? avg=?
+    a1_cond5 = a1 if sco > 38 else cor             #  20g/depth1: med=3114 avg=3504 10g/depth2: med=? avg=?
+    a1_cond6 = a1 if sco > 35 else cor             #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
+    a2 =  sco * (10*cor + 3*lef + 3*bot + opn)     #  20g/depth1: med=2496 avg=3301   10g/depth2: med=? avg=?
+    a3 =  sco * (12*cor + 2*lef + 1*bot + opn)     #  20g/depth1: med=2482 avg=2753   10g/depth2: med=? avg=?
+    a4 =  sco * (10*cor + 4*lef + 2*bot + opn + 1) #  20g/depth1: med=2086 avg=2603   10g/depth2: med=? avg=?
 
-    return a1_cond1
+    return a1_cond5
 
 def can_move(current_game_state):
     # todo return false if no legal children
