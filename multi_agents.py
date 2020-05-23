@@ -278,6 +278,7 @@ def better_evaluation_function(current_game_state):
     opn = 1-(occ/16)
     sid = all_side_monotones(s)
     dwn = all_down_monotones(s)
+    sum = sum_monotones(s)
 
 
 
@@ -297,8 +298,11 @@ def better_evaluation_function(current_game_state):
     a7 = sco * (10*ncor + 2*lef + 1*bot + 1*opn) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
     mono1 = sco * (10*cor + 1*lef + 1*bot + 1*dwn + 1*sid + 1*opn) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
     mono2 = sco * (10*cor + 1*dwn + 1*sid + 1*opn) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
+    mono2_cond = mono2 if sco > 45 else lev*cor    #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
+    mono3 = sco * (20*cor + 1*sum+ 4*opn) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?  #todo also looking good - achives 7k on more than half!
 
-    return mono1
+
+    return mono3
 
 def can_move(current_game_state):
     # todo return false if no legal children
@@ -319,7 +323,7 @@ def score(s):
 
 def max_in_sw_corner(s):
     # corners = current_game_state.board[[0, 0, -1, -1], [0, -1, 0, -1]]
-    return 1 if s.max_tile == s.board[3][0] else 0
+    return int(s.max_tile == s.board[3][0])
 
 def side_monotone(s, row):
     a = s.board[row][0]
@@ -327,7 +331,7 @@ def side_monotone(s, row):
     c = s.board[row][2]
     d = s.board[row][3]
 
-    return 1 if a >= b >= c >= d else 0
+    return int(a >= b >= c >= d)
 
 def bottom_monotone(s):
     return side_monotone(s, 3)
@@ -338,7 +342,7 @@ def down_monotone(s, col):
     c = s.board[2][col]
     d = s.board[3][col]
 
-    return 1 if d >= c >= b >= a else 0
+    return int(a <= b <= c <= d)
 
 def left_monotone(s):
     return down_monotone(s, 0)
