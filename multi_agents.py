@@ -222,6 +222,8 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
             # best_action = min(actions, key=lambda k: actions[k])
             random_action = random.choice(list(actions.keys()))
             return random_action, actions[random_action]
+            # avg_value = numpy.average(list(actions.items())) #todo value for enemy should be average of all values
+            # return random_action, avg_value
 
 
 
@@ -251,10 +253,14 @@ def better_evaluation_function(current_game_state):
 
 
 
-    a1 =  sco * (10*cor + 2*lef + 1*bot + opn) #  40g/depth1: med=2702 avg=3186   10g/depth2: med=???? avg=????
-    a2 =  sco * (10*cor + 3*lef + 2*bot + opn) #  40g/depth1: med=???? avg=????   10g/depth2: med=???? avg=????
+    a1 =  sco * (10*cor + 2*lef + 1*bot + opn)     #  20g/depth1: med=3146 avg=3183   10g/depth2: med=4758 avg=6017
+    a1_cond1 = a1 if sco > 50 else cor             #  20g/depth1: med=3882 avg=3817   10g/depth2: med=5574 avg=5690
+    a1_cond2 = a1 if sco > 50 else cor + lef + bot #  20g/depth1: med=3120 avg=3360   10g/depth2: med=???? avg=????
+    a2 =  sco * (10*cor + 3*lef + 3*bot + opn)     #  20g/depth1: med=2496 avg=3301   10g/depth2: med=???? avg=????
+    a3 =  sco * (12*cor + 2*lef + 1*bot + opn)     #  20g/depth1: med=2482 avg=2753   10g/depth2: med=???? avg=????
+    a4 =  sco * (10*cor + 4*lef + 2*bot + opn + 1) #  20g/depth1: med=2086 avg=2603   10g/depth2: med=???? avg=????
 
-    return a1
+    return a1_cond1
 
 def can_move(current_game_state):
     # todo return false if no legal children
