@@ -270,26 +270,35 @@ def better_evaluation_function(current_game_state):
     s = current_game_state
     lev = level(s)
     cor = max_in_sw_corner(s)
+    ncor = 1 if (cor == 1) else -1
     occ = num_occupied(s)
     sco = score(s)
     bot = bottom_monotone(s)
     lef = left_monotone(s)
     opn = 1-(occ/16)
+    sid = all_side_monotones(s)
+    dwn = all_down_monotones(s)
 
 
 
     a1 =  sco * (10*cor + 2*lef + 1*bot + opn)     #  20g/depth1: med=3146 avg=3183   10g/depth2: med=4758 avg=6017
-    a1_cond1 = a1 if sco > 50 else cor             #  20g/depth1: med=3882 avg=3817   10g/depth2: med=5574 avg=5690
+    a1_cond1 = a1 if sco > 50 else cor             #  20g/depth1: med=3882 avg=3817   10g/depth2: med=5574 avg=5690 #todo best so far it seems
     a1_cond2 = a1 if sco > 50 else cor + lef + bot #  20g/depth1: med=3120 avg=3360   10g/depth2: med=? avg=?
     a1_cond3 = a1 if sco > 45 else cor             #  20g/depth1: med=3390 avg=3478   10g/depth2: med=? avg=?
     a1_cond4 = a1 if sco > 40 else cor             #  20g/depth1: med=3272 avg=3406   10g/depth2: med=? avg=?
-    a1_cond5 = a1 if sco > 38 else cor             #  20g/depth1: med=3114 avg=3504 10g/depth2: med=? avg=?
+    a1_cond5 = a1 if sco > 38 else cor             #  20g/depth1: med=3114 avg=3504   10g/depth2: med=? avg=?
     a1_cond6 = a1 if sco > 35 else cor             #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
-    a2 =  sco * (10*cor + 3*lef + 3*bot + opn)     #  20g/depth1: med=2496 avg=3301   10g/depth2: med=? avg=?
-    a3 =  sco * (12*cor + 2*lef + 1*bot + opn)     #  20g/depth1: med=2482 avg=2753   10g/depth2: med=? avg=?
-    a4 =  sco * (10*cor + 4*lef + 2*bot + opn + 1) #  20g/depth1: med=2086 avg=2603   10g/depth2: med=? avg=?
+    a2 = sco * (10*cor + 3*lef + 3*bot + opn)     #  20g/depth1: med=2496 avg=3301   10g/depth2: med=? avg=?
+    a3 = sco * (12*cor + 2*lef + 1*bot + opn)     #  20g/depth1: med=2482 avg=2753   10g/depth2: med=? avg=?
+    a4 = sco * (10*cor + 4*lef + 2*bot + opn + 1) #  20g/depth1: med=2086 avg=2603   10g/depth2: med=? avg=?
+    a5 = sco * (10*cor + 4*lef + 2*bot + 5*opn + 1) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
+    a5cond_1 = a5 if sco > 50 else cor  #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
+    a6 = sco * (10*cor + 4*lef + 2*bot + opn + 1) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
+    a7 = sco * (10*ncor + 2*lef + 1*bot + 1*opn) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
+    mono1 = sco * (10*cor + 1*lef + 1*bot + 1*dwn + 1*sid + 1*opn) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
+    mono2 = sco * (10*cor + 1*dwn + 1*sid + 1*opn) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
 
-    return a1_cond5
+    return mono1
 
 def can_move(current_game_state):
     # todo return false if no legal children
@@ -299,35 +308,58 @@ def can_move(current_game_state):
 #     corners = current_game_state.board[[0, 0, -1, -1], [0, -1, 0, -1]]
 #     return 1 if current_game_state.max_tile == corners[2] else 0
 
-def num_occupied(current_game_state):
-    return np.count_nonzero(current_game_state.board)
+def num_occupied(s):
+    return np.count_nonzero(s.board)
 
-def level(current_game_state):
-    return np.log2(current_game_state.max_tile)
+def level(s):
+    return np.log2(s.max_tile)
 
-def score(current_game_state):
-    return current_game_state.score
+def score(s):
+    return s.score
 
-def max_in_sw_corner(current_game_state):
+def max_in_sw_corner(s):
     # corners = current_game_state.board[[0, 0, -1, -1], [0, -1, 0, -1]]
-    return 1 if current_game_state.max_tile == current_game_state.board[3][0] else 0
+    return 1 if s.max_tile == s.board[3][0] else 0
 
-def bottom_monotone(current_game_state):
-    a = current_game_state.board[3][0]
-    b = current_game_state.board[3][1]
-    c = current_game_state.board[3][2]
-    d = current_game_state.board[3][3]
+def side_monotone(s, row):
+    a = s.board[row][0]
+    b = s.board[row][1]
+    c = s.board[row][2]
+    d = s.board[row][3]
 
     return 1 if a >= b >= c >= d else 0
 
-def left_monotone(current_game_state):
-    a = current_game_state.board[0][0]
-    b = current_game_state.board[1][0]
-    c = current_game_state.board[2][0]
-    d = current_game_state.board[3][0]
+def bottom_monotone(s):
+    return side_monotone(s, 3)
+
+def down_monotone(s, col):
+    a = s.board[0][col]
+    b = s.board[1][col]
+    c = s.board[2][col]
+    d = s.board[3][col]
 
     return 1 if d >= c >= b >= a else 0
 
+def left_monotone(s):
+    return down_monotone(s, 0)
+
+def all_side_monotones(s):
+    return all([side_monotone(s, x) for x in range(3)])
+
+def sum_side_monotones(s):
+    return sum([side_monotone(s, x) for x in range(3)])
+
+def all_down_monotones(s):
+    return all([down_monotone(s, x) for x in range(3)])
+
+def sum_down_monotones(s):
+    return sum([down_monotone(s, x) for x in range(3)])
+
+def all_monotones(s):
+    return all_down_monotones(s) and all_side_monotones(s)
+
+def sum_monotones(s):
+    return sum_down_monotones(s) + sum_side_monotones(s)
 
 # Abbreviation
 better = better_evaluation_function
