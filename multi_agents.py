@@ -215,8 +215,7 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         legal moves.
         """
         # todo 4
-        # action, val = self.expectimax(game_state, 0, self.depth)
-        action, val = self.ab_expectimax(game_state, 0, self.depth)
+        action, val = self.expectimax(game_state, 0, self.depth)
         # print(val)
         # exit(0)
         return action
@@ -238,28 +237,7 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
             avg_value = numpy.average(list(actions.values()))
             return random_action, avg_value
 
-    def ab_expectimax(self, game_state, agent_index, depth, a=-numpy.inf, b=numpy.inf):
-        legal_actions = game_state.get_legal_actions(agent_index)
-        if depth == 0 or len(legal_actions) == 0:
-            return Action.STOP, self.evaluation_function(game_state)
-        actions = {}
-        for action in legal_actions:
-            state = game_state.generate_successor(agent_index, action)
-            new_action, value = self.ab_expectimax(state, 1 - agent_index, depth - 0.5, a, b)
-            actions[action] = value
-            if agent_index == 0: #max - prune only for our player
-                if value >= b:
-                    return action, value
-            else: # min
-                if value < b:
-                    b = value
-        if agent_index == 0:
-            best_action = max(actions, key=lambda k: actions[k])
-            return best_action, actions[best_action]
-        else: # min - enemy choice - choose randomly
-            random_action = random.choice(list(actions.keys()))
-            avg_value = numpy.average(list(actions.values()))
-            return random_action, avg_value
+
 
 
 
@@ -269,7 +247,23 @@ def better_evaluation_function(current_game_state):
     """
     Your extreme 2048 evaluation function (question 5).
 
-    DESCRIPTION: <write something here so we know what you did>
+    DESCRIPTION:
+
+    we spent a lot of time trying to find heuristics that work well
+    initially we created a linear combination, multiplying by the score as the base.
+    with bonuses for having the max tile in the corner,
+    for having certain rows monotonically increase to this corner,
+    for having more of the board free (either as a sum or a percentage)
+
+    while we sometimes achieved nice results,
+    the algorithm could not recover when forced to leave the corner,
+    as suddenly the high penalties for corner and monotonicity
+    prevented the moves necessary to restore a well balanced board.
+
+    By applying a pattern as the base score, we changed the base multiplier to be a gradient
+    where moving higher tiles to the corner always improves their value.
+    suddenly the algorithm was able to recover from states even we would have given up on.
+    was very impressive to see.
 
     IDEAS
     - ensure high val in a specific corner
@@ -279,16 +273,16 @@ def better_evaluation_function(current_game_state):
     """
     # todo 5
     s = current_game_state
-    lev = level(s)
+    # lev = level(s)
     cor = max_in_sw_corner(s)
-    ncor = 1 if (cor == 1) else -1
+    # ncor = 1 if (cor == 1) else -1
     occ = num_occupied(s)
     sco = score(s)
     bot = bottom_monotone(s)
     lef = left_monotone(s)
     opn = 1-(occ/16)
-    sid = all_side_monotones(s)
-    dwn = all_down_monotones(s)
+    # sid = all_side_monotones(s)
+    # dwn = all_down_monotones(s)
     sum_mono = sum_monotones(s)
     pct_mono = sum_mono/8
     pat = pattern_score(s)
@@ -313,17 +307,17 @@ def better_evaluation_function(current_game_state):
     # mono2 = sco * (10*cor + 1*dwn + 1*sid + 1*opn) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
     # mono2_cond = mono2 if sco > 45 else lev*cor    #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
     # mono3 = sco * (20*cor + 1*sum_mono+ 4*opn) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?  #todo also looking good - achives 7k on more than half!
-    test1 = pat* (20*cor + 1*lef + 1*bot + 1*sum_mono + 4*opn) # 7124 MED 8887 AVG (5/10 7k) 16k max
-    test2 = pat* (5*cor + 1*lef + 1*bot + 1*sum_mono + 2*opn)  # todo  7784 MED 9066 AVG (7/10 7k) 17k max
-    test3 = pat* (5*cor + 2*lef + 1*bot + 1*sum_mono + 2*opn)  # 6924 med 8234 avg (5/10 7k) 14k max
-    test4 = pat* (5*cor + 2*lef + 1*bot + 1*sum_mono + 4*opn)  # meh -  hopefully leaves more open? for endgame meh
-    test5 = pat* (1*cor + 1*lef + 1*bot + 1*pct_mono + 1*opn)  # todo baseline? meh
-    test6 = pat* (7*cor + 1*lef + 1*bot + 1*pct_mono + 2*opn)  # todo  9072 MED 9340 ABG (7/10 7k) 16k max
+    # test1 = pat* (20*cor + 1*lef + 1*bot + 1*sum_mono + 4*opn) # 7124 MED 8887 AVG (5/10 7k) 16k max
+    # test2 = pat* (5*cor + 1*lef + 1*bot + 1*sum_mono + 2*opn)  # todo  7784 MED 9066 AVG (7/10 7k) 17k max
+    # test3 = pat* (5*cor + 2*lef + 1*bot + 1*sum_mono + 2*opn)  # 6924 med 8234 avg (5/10 7k) 14k max
+    # test4 = pat* (5*cor + 2*lef + 1*bot + 1*sum_mono + 4*opn)  # meh -  hopefully leaves more open? for endgame meh
+    # test5 = pat* (1*cor + 1*lef + 1*bot + 1*pct_mono + 1*opn)  # todo baseline? meh
+    # test6 = pat* (7*cor + 1*lef + 1*bot + 1*pct_mono + 2*opn)  # todo  9072 MED 9340 ABG (7/10 7k) 16k max
     test7 = pat* (7*cor + 1*lef + 1*bot + 1*pct_mono + 3*opn) # todo 12570 MED 12986 AVG (9/10 7k) 29k max !!
-    test0 = pat* (7*cor + 1*lef + 1*bot + 1*pct_mono + 4*opn) #  22k max but meh avg no good at all
+    # test0 = pat* (7*cor + 1*lef + 1*bot + 1*pct_mono + 4*opn) #  22k max but meh avg no good at all
 
 
-    return test0
+    return test7
 
 def can_move(current_game_state):
     # todo return false if no legal children
