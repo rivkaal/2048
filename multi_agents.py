@@ -290,30 +290,40 @@ def better_evaluation_function(current_game_state):
     sid = all_side_monotones(s)
     dwn = all_down_monotones(s)
     sum_mono = sum_monotones(s)
+    pct_mono = sum_mono/8
+    pat = pattern_score(s)
 
 
 
     a1 =  sco * (10*cor + 2*lef + 1*bot + opn)     #  20g/depth1: med=3146 avg=3183   10g/depth2: med=4758 avg=6017
-    a1_cond1 = a1 if sco > 50 else cor             #  20g/depth1: med=3882 avg=3817   10g/depth2: med=5574 avg=5690 #todo best so far it seems
-    a1_cond2 = a1 if sco > 50 else cor + lef + bot #  20g/depth1: med=3120 avg=3360   10g/depth2: med=? avg=?
-    a1_cond3 = a1 if sco > 45 else cor             #  20g/depth1: med=3390 avg=3478   10g/depth2: med=? avg=?
-    a1_cond4 = a1 if sco > 40 else cor             #  20g/depth1: med=3272 avg=3406   10g/depth2: med=? avg=?
-    a1_cond5 = a1 if sco > 38 else cor             #  20g/depth1: med=3114 avg=3504   10g/depth2: med=? avg=?
-    a1_cond6 = a1 if sco > 35 else cor             #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
-    a2 = sco * (10*cor + 3*lef + 3*bot + opn)     #  20g/depth1: med=2496 avg=3301   10g/depth2: med=? avg=?
-    a3 = sco * (12*cor + 2*lef + 1*bot + opn)     #  20g/depth1: med=2482 avg=2753   10g/depth2: med=? avg=?
-    a4 = sco * (10*cor + 4*lef + 2*bot + opn + 1) #  20g/depth1: med=2086 avg=2603   10g/depth2: med=? avg=?
-    a5 = sco * (10*cor + 4*lef + 2*bot + 5*opn + 1) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
-    a5cond_1 = a5 if sco > 50 else cor  #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
-    a6 = sco * (10*cor + 4*lef + 2*bot + opn + 1) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
-    a7 = sco * (10*ncor + 2*lef + 1*bot + 1*opn) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
-    mono1 = sco * (10*cor + 1*lef + 1*bot + 1*dwn + 1*sid + 1*opn) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
-    mono2 = sco * (10*cor + 1*dwn + 1*sid + 1*opn) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
-    mono2_cond = mono2 if sco > 45 else lev*cor    #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
-    mono3 = sco * (20*cor + 1*sum_mono+ 4*opn) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?  #todo also looking good - achives 7k on more than half!
+    # a1_cond1 = a1 if sco > 50 else cor             #  20g/depth1: med=3882 avg=3817   10g/depth2: med=5574 avg=5690 #todo best so far it seems
+    # a1_cond2 = a1 if sco > 50 else cor + lef + bot #  20g/depth1: med=3120 avg=3360   10g/depth2: med=? avg=?
+    # a1_cond3 = a1 if sco > 45 else cor             #  20g/depth1: med=3390 avg=3478   10g/depth2: med=? avg=?
+    # a1_cond4 = a1 if sco > 40 else cor             #  20g/depth1: med=3272 avg=3406   10g/depth2: med=? avg=?
+    # a1_cond5 = a1 if sco > 38 else cor             #  20g/depth1: med=3114 avg=3504   10g/depth2: med=? avg=?
+    # a1_cond6 = a1 if sco > 35 else cor             #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
+    # a2 = sco * (10*cor + 3*lef + 3*bot + opn)     #  20g/depth1: med=2496 avg=3301   10g/depth2: med=? avg=?
+    # a3 = sco * (12*cor + 2*lef + 1*bot + opn)     #  20g/depth1: med=2482 avg=2753   10g/depth2: med=? avg=?
+    # a4 = sco * (10*cor + 4*lef + 2*bot + opn + 1) #  20g/depth1: med=2086 avg=2603   10g/depth2: med=? avg=?
+    # a5 = sco * (10*cor + 4*lef + 2*bot + 5*opn + 1) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
+    # a5cond_1 = a5 if sco > 50 else cor  #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
+    # a6 = sco * (10*cor + 4*lef + 2*bot + opn + 1) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
+    # a7 = sco * (10*ncor + 2*lef + 1*bot + 1*opn) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
+    # mono1 = sco * (10*cor + 1*lef + 1*bot + 1*dwn + 1*sid + 1*opn) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
+    # mono2 = sco * (10*cor + 1*dwn + 1*sid + 1*opn) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
+    # mono2_cond = mono2 if sco > 45 else lev*cor    #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?
+    # mono3 = sco * (20*cor + 1*sum_mono+ 4*opn) #  20g/depth1: med=? avg=?   10g/depth2: med=? avg=?  #todo also looking good - achives 7k on more than half!
+    test1 = pat* (20*cor + 1*lef + 1*bot + 1*sum_mono + 4*opn) # 7124 MED 8887 AVG (5/10 7k) 16k max
+    test2 = pat* (5*cor + 1*lef + 1*bot + 1*sum_mono + 2*opn)  # todo  7784 MED 9066 AVG (7/10 7k) 17k max
+    test3 = pat* (5*cor + 2*lef + 1*bot + 1*sum_mono + 2*opn)  # 6924 med 8234 avg (5/10 7k) 14k max
+    test4 = pat* (5*cor + 2*lef + 1*bot + 1*sum_mono + 4*opn)  # meh -  hopefully leaves more open? for endgame meh
+    test5 = pat* (1*cor + 1*lef + 1*bot + 1*pct_mono + 1*opn)  # todo baseline? meh
+    test6 = pat* (7*cor + 1*lef + 1*bot + 1*pct_mono + 2*opn)  # todo  9072 MED 9340 ABG (7/10 7k) 16k max
+    test7 = pat* (7*cor + 1*lef + 1*bot + 1*pct_mono + 3*opn) # todo 12570 MED 12986 AVG (9/10 7k) 29k max !!
+    test0 = pat* (7*cor + 1*lef + 1*bot + 1*pct_mono + 4*opn) #  22k max but meh avg no good at all
 
 
-    return mono3
+    return test0
 
 def can_move(current_game_state):
     # todo return false if no legal children
@@ -342,6 +352,8 @@ def side_monotone(s, row):
     c = s.board[row][2]
     d = s.board[row][3]
 
+    # a is leftmost should be largest
+
     return int(a >= b >= c >= d)
 
 def bottom_monotone(s):
@@ -352,6 +364,8 @@ def down_monotone(s, col):
     b = s.board[1][col]
     c = s.board[2][col]
     d = s.board[3][col]
+
+    # a is highest, should be smallest
 
     return int(a <= b <= c <= d)
 
@@ -375,6 +389,13 @@ def all_monotones(s):
 
 def sum_monotones(s):
     return sum_down_monotones(s) + sum_side_monotones(s)
+
+def pattern_score(s):
+    weights = np.array([[3, 1, 0, 0],
+                       [ 5, 3, 1, 0],
+                       [ 15,5, 3, 1],
+                       [ 30,15,5, 3]])
+    return sum(sum(weights*s.board))
 
 # Abbreviation
 better = better_evaluation_function
