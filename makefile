@@ -5,7 +5,7 @@ default: all
 all: clean tar
 
 tar:
-	tar -czvf ex2.tar search.py blokus_problems.py README.txt
+	tar -czvf ex2.tar multi_agents.py README.txt
 
 clean:
 	cd ..
