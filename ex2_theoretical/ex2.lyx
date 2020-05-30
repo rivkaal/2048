@@ -244,13 +244,20 @@ Run alpha-beta pruning on a tree
 \end_inset
 
 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+todo
 \end_layout
 
-\begin_layout Subsubsection
-\begin_inset space \space{}
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+No- value is optimal but not necessarily the same
 \end_layout
 
 \begin_layout Subsection
@@ -406,7 +413,7 @@ Remove universals:
 \end_layout
 
 \begin_layout Standard
-Replace conjuctions (none):
+Replace conjunctions (none):
 \end_layout
 
 \begin_layout Standard
@@ -492,7 +499,7 @@ Remove universals (no change)
 \end_layout
 
 \begin_layout Standard
-Replace conjuctions:
+Replace conjunctions:
 \end_layout
 
 \begin_layout Standard
