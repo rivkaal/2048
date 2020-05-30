@@ -227,7 +227,7 @@ Run minimax on a tree
 \begin_layout Standard
 \begin_inset Graphics
 	filename fig-0-1.jpeg
-	width 100text%
+	width 100col%
 
 \end_inset
 
@@ -252,7 +252,7 @@ Run alpha-beta pruning on a tree
 \begin_layout Standard
 \begin_inset Graphics
 	filename fig-0-2.jpeg
-	width 100sp
+	width 100col%
 
 \end_inset
 
@@ -321,7 +321,7 @@ The reordering can be seen in the image, with the values and cutoffs.
 \begin_layout Standard
 \begin_inset Graphics
 	filename fig-0-3.jpeg
-	width 100text%
+	width 100col%
 
 \end_inset
 
@@ -392,7 +392,7 @@ Game tree:
 \begin_layout Standard
 \begin_inset Graphics
 	filename fig-0-4.jpeg
-	width 100sp
+	width 100col%
 
 \end_inset
 
@@ -420,6 +420,17 @@ The evaluations can be seen on the game tree above.
 \begin_layout Standard
 The backed-up values can also be seen on the game tree above, the chosen
  action is the middle board - placing X at the center.
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The nodes are circled in the game tree above.
 \end_layout
 
 \begin_layout Section
