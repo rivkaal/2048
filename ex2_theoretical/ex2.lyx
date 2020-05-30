@@ -5,6 +5,9 @@
 \save_transient_properties true
 \origin unavailable
 \textclass article
+\begin_preamble
+
+\end_preamble
 \use_default_options true
 \maintain_unincluded_children false
 \language english
@@ -201,17 +204,21 @@ Rivka Lvova
 337827265
 \end_layout
 
-\begin_layout Section
+\begin_layout Section*
 
 \series bold
 \size large
 \emph on
 \noun on
-Subject
+0) Minimax
 \end_layout
 
 \begin_layout Subsection
-\begin_inset space \thinspace{}
+Run minimax on a tree
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset space \space{}
 \end_inset
 
 
@@ -222,7 +229,75 @@ Subject
 \end_layout
 
 \begin_layout Subsection
-\begin_inset space \thinspace{}
+Run alpha-beta pruning on a tree
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Optimized alpha-beta pruning
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Tic-Tac-Toe
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset space \space{}
 \end_inset
 
 
@@ -234,43 +309,51 @@ Subject
 \size large
 \emph on
 \noun on
-Subject
+Knowledge Representation
 \end_layout
 
 \begin_layout Subsection
-\begin_inset space \thinspace{}
+Conversion to clause form
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+English → Logic
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset space \space{}
 \end_inset
 
 
 \end_layout
 
 \begin_layout Standard
-\begin_inset space \thinspace{}
-\end_inset
-
-
-\begin_inset Newline newline
-\end_inset
-
 
 \end_layout
 
 \begin_layout Subsection
-\begin_inset space \thinspace{}
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
-\begin_inset space \thinspace{}
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-
+Most general unifier
 \end_layout
 
 \begin_layout Subsubsection
@@ -294,88 +377,25 @@ Subject
 
 \end_layout
 
-\begin_layout Section
-
-\series bold
-\size large
-\emph on
-\noun on
-Subject
+\begin_layout Subsection
+Resolution
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 \begin_inset space \thinspace{}
 \end_inset
 
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 \begin_inset space \thinspace{}
 \end_inset
 
 
 \end_layout
 
-\begin_layout Subsection
-\begin_inset space \thinspace{}
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-\begin_inset space \thinspace{}
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-\begin_inset space \thinspace{}
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-\begin_inset space \thinspace{}
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-
-\series bold
-\size large
-\emph on
-\noun on
-Subject
-\end_layout
-
-\begin_layout Subsection
-\begin_inset space \thinspace{}
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-\begin_inset space \thinspace{}
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-\begin_inset space \thinspace{}
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
+\begin_layout Subsubsection
 \begin_inset space \thinspace{}
 \end_inset
 
