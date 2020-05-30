@@ -323,8 +323,228 @@ Conversion to clause form
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+∀x & :[P1(x)∧P2(x,A)]⇒[P3(x,B)∨(∀y:∃z:P3(y,z)⇒P4(x,y))]
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Replace implications:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+∀x & :\lnot\left([P1(x)∧P2(x,A)]\right)\lor[P3(x,B)∨(∀y:∃z:\left(\lnot P3(y,z)\lor P4(x,y)\right))]
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Distribute negations:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+∀x & :\left([\lnot P1(x)\lor\lnot P2(x,A)]\right)\lor[P3(x,B)∨(∀y:∃z:\left(\lnot P3(y,z)\lor P4(x,y)\right))]
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Standardize variables (no change)
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Skolemize
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+∀x & :\left([\lnot P1(x)\lor\lnot P2(x,A)]\right)\lor[P3(x,B)∨(∀y:\left(\lnot P3(y,S1\left(y\right))\lor P4(x,y)\right))]
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Remove universals:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+ & \left(\lnot P1(x)\lor\lnot P2(x,A)]\right)\lor\left(P3(x,B)∨\left(\lnot P3(y,S1\left(y\right))\lor P4(x,y)\right)\right)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Replace conjuctions (none):
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Set of clauses):
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+ & \left\{ \left\{ \lnot P1(x),\lnot P2(x,A)],P3(x,B),\lnot P3(y,S1\left(y\right)),P4(x,y)\right\} \right\} 
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsubsection
 \begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+(P⇒Q)⇒((Q⇒R)⇒(P⇒R))
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Replace implications:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\lnot(\lnot P\lor Q)\lor(\lnot(\lnot Q\lor R)\lor(\lnot P\lor R))
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Distribute negations:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+(P\land\lnot Q)\lor((Q\land\lnot R)\lor(\lnot P\lor R))
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Standardize variables (no change)
+\end_layout
+
+\begin_layout Standard
+Skolemize (no change)
+\end_layout
+
+\begin_layout Standard
+Remove universals (no change)
+\end_layout
+
+\begin_layout Standard
+Replace conjuctions:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+(P\land\lnot Q)\lor((Q\land\lnot R)\lor\mathbf{(\lnot P\lor R)})
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\mathbf{(P\land\lnot Q)}\lor\left(\left(Q\lor(\lnot P\lor R)\right)\land\left(\lnot R\lor(\lnot P\lor R)\right)\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\left(Q\lor(\lnot P\lor R)\lor(P\land\lnot Q)\right)\land\left(\lnot R\lor(\lnot P\lor R)\lor(P\land\lnot Q)\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Set of clauses:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\left\{ \left\{ Q,(\lnot P\lor R),(P\land\lnot Q)\right\} ,\left\{ \lnot R,(\lnot P\lor R),(P\land\lnot Q)\right\} \right\} 
+\]
+
 \end_inset
 
 
@@ -341,8 +561,56 @@ English → Logic
 
 \end_layout
 
+\begin_layout Standard
+Neither the storm blast nor the flood did any damage to the House.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Assume the functions are defined for the paticular storm, flood, and house
+ in question:
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\forall x:\left[\left(isTheStorm\left(x\right)\lor isTheFlood\left(x\right)\right)\implies\lnot damagedHouse\left(x\right)\right]
+\]
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsubsection
 \begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Drivers should neither drive over 65 miles per hour nor cross the red light,
+ or they will get a ticket.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\forall x:\left[\left(\text{is}Driver\left(x\right)\;\land\ \left(droveOver65\left(x\right)\lor crossedRed\left(x\right)\right)\right)\implies ticket\left(x\right)\right]
+\]
+
 \end_inset
 
 
