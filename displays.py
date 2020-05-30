@@ -1,5 +1,7 @@
 import time
 
+from numpy import median, average
+
 
 class SummaryDisplay(object):
     def __init__(self):
@@ -32,3 +34,9 @@ class SummaryDisplay(object):
         print("highest tile: %s" % self.highest_tile)
         print("game_durations: %s" % self.game_durations)
         print("win rate: %s" % win_rate)
+
+        print("\navg highest tile: %s" % median(self.highest_tile) )
+        print("median highest tile: %s" % (median(self.highest_tile)) )
+
+        print("\nMedian score: %s" % median(self.scores) )
+        print("Avg score: %s\n" % average(self.scores) )
