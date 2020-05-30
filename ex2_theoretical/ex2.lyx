@@ -361,6 +361,10 @@ Tic-Tac-Toe
 \end_layout
 
 \begin_layout Standard
+Game tree:
+\end_layout
+
+\begin_layout Standard
 \begin_inset Graphics
 	filename fig-0-4.jpeg
 	width 100sp
@@ -377,11 +381,20 @@ Tic-Tac-Toe
 
 \end_layout
 
+\begin_layout Standard
+The evaluations can be seen on the game tree above.
+\end_layout
+
 \begin_layout Subsubsection
 \begin_inset space \space{}
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+The backed-up values can also be seen on the game tree above, the chosen
+ action is the middle board - placing X at the center.
 \end_layout
 
 \begin_layout Section
