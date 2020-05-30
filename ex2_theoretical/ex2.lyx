@@ -271,11 +271,30 @@ Optimized alpha-beta pruning
 
 \end_layout
 
+\begin_layout Standard
+The reordering can be seen in the image, with the values and cutoffs.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename fig-0-3.jpeg
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsubsection
 \begin_inset space \space{}
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+As can be seen in the image, the nodes M D H I are not evaluated, as well
+ as 7 leaf nodes.
 \end_layout
 
 \begin_layout Subsection
