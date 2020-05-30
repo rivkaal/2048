@@ -272,6 +272,31 @@ Optimized alpha-beta pruning
 \end_layout
 
 \begin_layout Standard
+We reorder the nodes so that B and C are organized internally with the smallest
+ value first (these are min nodes, and we want to increase the likelihood
+ of cutoffs of larger values.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset space \space{}
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+And we swap C to be before B, since C has higher values and A is a max node.
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 The reordering can be seen in the image, with the values and cutoffs.
 \end_layout
 
