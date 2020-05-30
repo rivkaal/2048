@@ -225,6 +225,16 @@ Run minimax on a tree
 \end_layout
 
 \begin_layout Standard
+\begin_inset Graphics
+	filename fig-0-1.jpeg
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 
 \end_layout
 
@@ -234,6 +244,16 @@ Run alpha-beta pruning on a tree
 
 \begin_layout Subsubsection
 \begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename fig-0-2.jpeg
+	width 100sp
+
 \end_inset
 
 
@@ -335,6 +355,16 @@ Tic-Tac-Toe
 
 \begin_layout Subsubsection
 \begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename fig-0-4.jpeg
+	width 100sp
+
 \end_inset
 
 
