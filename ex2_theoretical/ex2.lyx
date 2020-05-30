@@ -264,20 +264,18 @@ Run alpha-beta pruning on a tree
 \end_inset
 
 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-todo
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
-No- value is optimal but not necessarily the same
+Indeed, AB pruning is specifically designed not to hurt optimality, and
+ it only ignores branches that are guaranteed not to be chosen.
+\end_layout
+
+\begin_layout Standard
+However, if we are beta pruning a branch that is equal to the current beta
+ score, depending on how we choose to handle these cases in AB and vanilla
+ minimax, we might choose a different branch, depending on whether we always
+ choose the 'left most' or earlier min/max, or the most recently explored.
 \end_layout
 
 \begin_layout Subsection
@@ -351,6 +349,33 @@ Tic-Tac-Toe
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Initially it would seem like there are 9! - all the ways to fill the board
+ with 5 X's and 4 O's
+\end_layout
+
+\begin_layout Standard
+but there are less the 9! games - many games end before the board is full.
+\end_layout
+
+\begin_layout Standard
+and there is game symmetry which makes the search space of games smaller
+ if we consider functionally equivalent board arrangements.
+\end_layout
+
+\begin_layout Standard
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+From reading some longer and more exact calculations, it seems that taking
+ these considerations into account cuts the search space almost by half
+ - impressive.
 \end_layout
 
 \begin_layout Subsubsection
@@ -1013,8 +1038,66 @@ Resolution
 
 \end_layout
 
-\begin_layout Subsubsection
-\begin_inset space \thinspace{}
+\begin_layout Standard
+\begin_inset Formula $\{p(a),q(a)\},\{\lnot p(x),r(x)\},\{\lnot q(a)\}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+1.
+ 
+\begin_inset Formula $\{p(a),q(a)\}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+2.
+ 
+\begin_inset Formula $\{\lnot p(x),r(x)\}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+3.
+ 
+\begin_inset Formula $\{\lnot q(a)\}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+4.
+ 
+\begin_inset Formula $\{p(a)\}$
+\end_inset
+
+ 1,3
+\end_layout
+
+\begin_layout Standard
+5.
+ 
+\begin_inset Formula $\{\lnot p(a),r(a)\}$
+\end_inset
+
+ 2:
+\begin_inset Formula $[x\backslash a]$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+6.
+ 
+\begin_inset Formula $\{r(a)\}$
 \end_inset
 
 
@@ -1025,6 +1108,171 @@ Resolution
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\forall x\;p(x)\Rightarrow q(x)$
+\end_inset
+
+ after conversion to CNF we will get 
+\begin_inset Formula $\{\lnot p(x),q(x)\}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+we want to proof that 
+\begin_inset Formula $\forall x\;p(x)\Rightarrow\forall x\;q(x)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+so we will assume that it's not true: 
+\begin_inset Formula $\lnot(\forall x\;p(x)\Rightarrow\forall x\;q(x))$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+after conversion to CNF we will get 
+\begin_inset Formula $\{p(A)\},\{\lnot q(B)\}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+so by using resolution we will get:
+\end_layout
+
+\begin_layout Standard
+1.
+ 
+\begin_inset Formula $\{\lnot p(x),q(x)\}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+2.
+ 
+\begin_inset Formula $\{p(A)\}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+3.
+ 
+\begin_inset Formula $\{\lnot q(B)\}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+4.
+ 
+\begin_inset Formula $\{\lnot p(A),q(A)\}$
+\end_inset
+
+ 1:
+\begin_inset Formula $[x\backslash A]$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+5.
+ 
+\begin_inset Formula $\{q(A)\}$
+\end_inset
+
+ 2,4
+\end_layout
+
+\begin_layout Standard
+6.
+ 
+\begin_inset Formula $\{q(B)\}$
+\end_inset
+
+ 5:
+\begin_inset Formula $[A\backslash B]$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+7.
+ 
+\begin_inset Formula $\{\}$
+\end_inset
+
+3,6
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset space \thinspace{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\lnot\forall x(((p(x)\Rightarrow q(x))\Rightarrow p(x))\Rightarrow p(x))$
+\end_inset
+
+ we will convert to CNF and show that it contains a contradiction:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\exists x\lnot(\lnot(\lnot(\lnot p(x)\lor q(x))\lor p(x))\lor p(x))$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\exists x(((p(x)\land\lnot q(x))\land\lnot p(x))\land\lnot p(x))$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $((p(x)\land\lnot q(x))\land\lnot p(x))\land\lnot p(x)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $p(x)\land\lnot q(x)\land\lnot p(x)\land\lnot p(x)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+it's obvious that 
+\begin_inset Formula $p(x)\land\lnot p(x)$
+\end_inset
+
+is a contradiction.
+ so 
+\begin_inset Formula $\forall x(((p(x)\Rightarrow q(x))\Rightarrow p(x))\Rightarrow p(x)$
+\end_inset
+
+ is true.
 \end_layout
 
 \begin_layout Standard
