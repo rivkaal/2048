@@ -570,7 +570,7 @@ Neither the storm blast nor the flood did any damage to the House.
 \begin_inset Newline newline
 \end_inset
 
-Assume the functions are defined for the paticular storm, flood, and house
+Assume the functions are defined for the particular storm, flood, and house
  in question:
 \end_layout
 
@@ -616,10 +616,6 @@ Drivers should neither drive over 65 miles per hour nor cross the red light,
 
 \end_layout
 
-\begin_layout Standard
-
-\end_layout
-
 \begin_layout Subsection
 Most general unifier
 \end_layout
@@ -631,11 +627,74 @@ Most general unifier
 
 \end_layout
 
-\begin_layout Subsubsection
-\begin_inset space \thinspace{}
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+ & Color(Hat(Postman),Blue)\\
+ & Color(Hat(y),x)
+\end{align*}
+
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{\left\{ y\to Postman\right\} }
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+then
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+ & Color(Hat(Postman),Blue)\\
+ & Color(Hat(Postman),x)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{\left\{ y\to Postman,\ x\to Blue\right\} }
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+then
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+ & Color(Hat(Postman),Blue)\\
+ & Color(Hat(Postman),Blue)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Success!
 \end_layout
 
 \begin_layout Subsubsection
@@ -643,6 +702,210 @@ Most general unifier
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+ & R\left(F\left(y\right),y,x\right)\\
+ & R\left(x,F\left(A\right),F\left(v\right)\right)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+add
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{\left\{ x\to F\left(y\right)\right\} }
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+giving
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+ & R\left(F\left(y\right),y,F\left(y\right)\right)\\
+ & R\left(F\left(y\right),F\left(A\right),F\left(v\right)\right)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{\left\{ x\to F\left(y\right)\right\} }
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+add
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{y\to F\left(A\right)}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+giving
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+ & R\left(F\left(F\left(A\right)\right),F\left(A\right),F\left(F\left(A\right)\right)\right)\\
+ & R\left(F\left(F\left(A\right)\right),F\left(A\right),F\left(v\right)\right)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{\left\{ x\to F\left(F\left(A\right)\right),y\to F\left(A\right)\right\} }
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+add
+\begin_inset Formula 
+\[
+v\to F\left(A\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+giving
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+ & R\left(F\left(F\left(A\right)\right),F\left(A\right),F\left(F\left(A\right)\right)\right)\\
+ & R\left(F\left(F\left(A\right)\right),F\left(A\right),F\left(F\left(A\right)\right)\right)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{\left\{ x\to F\left(F\left(A\right)\right),y\to F\left(A\right),v\to F\left(A\right)\right\} }
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Success!
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset space \thinspace{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+ & Loves\left(x,y\right)\\
+ & Loves\left(y,x\right)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+add
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\text{x\to y}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+giving
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+ & Loves\left(y,y\right)\\
+ & Loves\left(y,y\right)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\left\{ \text{x\ensuremath{\to}y}\right\} 
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Success!
 \end_layout
 
 \begin_layout Subsection
