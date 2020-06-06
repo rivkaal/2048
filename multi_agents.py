@@ -227,7 +227,7 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         actions = {}
         for action in legal_actions:
             state = game_state.generate_successor(agent_index, action)
-            new_action, value = self.ab_expectimax(state, 1 - agent_index, depth - 0.5)
+            new_action, value = self.expectimax(state, 1 - agent_index, depth - 0.5)
             actions[action] = value
         if agent_index == 0:
             best_action = max(actions, key=lambda k: actions[k])
